@@ -7,9 +7,10 @@ namespace PaymentSolution.Common
 {
     public class AppSettings
     {
-        public string Site { get; set; }
+        public string Site_URL { get; set; }
         public string Audience { get; set; }
         public string ExpireTime { get; set; }
-        public string Secret { get; set; }
+        public string JWT_Secret { get; set; }
+        public string DbConnection { get; set; }
     }
 }

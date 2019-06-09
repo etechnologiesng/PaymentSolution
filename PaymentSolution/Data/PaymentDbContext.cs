@@ -12,7 +12,7 @@ namespace PaymentSolution.Data
     {
         public PaymentDbContext(DbContextOptions<PaymentDbContext> options) : base(options)
         {
-
+          //  options = options.ToString()
         }
         public DbSet<PaymentDetail> paymentDetails { get; set; }
     }
