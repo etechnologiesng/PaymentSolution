@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PaymentSolution.Core.Entity;
 using PaymentSolution.Model.Entity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,13 @@ namespace PaymentSolution.Data
         {
           //  options = options.ToString()
         }
-        public DbSet<PaymentDetail> paymentDetails { get; set; }
+        public PaymentDbContext()
+        {
+
+        }
+        public DbSet<PaymentDetail> PaymentDetails { get; set; }
+
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
     }
 }

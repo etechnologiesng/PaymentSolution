@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace PaymentSolution.Core.Entity
 {
-    public class User : IdentityUser
+    public class AppRole : IdentityRole
     {
-
-
     }
 }

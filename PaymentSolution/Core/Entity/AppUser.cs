@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace PaymentSolution.Core.Entity
 {
-    public class UserRole : IdentityRole
+    public class AppUser : IdentityUser
     {
+
+        public string Fullname { get; set; }
+
+      
     }
 }

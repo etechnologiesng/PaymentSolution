@@ -27,4 +27,4 @@ namespace PaymentSolution.Model.Entity
         public string CVV { get; set; }
     }
 }
-}
+

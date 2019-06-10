@@ -40,11 +40,9 @@ namespace PaymentSolution
 
             services.AddTransient<IPayment, PaymentService>((service) => service.GetService<PaymentService>());
 
-            services.AddDbContext<PaymentDbContext>(op =>
-            {
-                op.UseSqlServer(Configuration.GetConnectionString("DbConnection"));
-            });
-            services.AddIdentity<User, UserRole>(op =>
+            services.AddDbContext<PaymentDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddIdentity<AppUser, AppRole>(op =>
             {
                 op.Password.RequiredLength = 6;
 
@@ -52,9 +50,9 @@ namespace PaymentSolution
             });
             services.AddAuthorization(op => op.AddPolicy("First", po =>
              {
-                 po.RequireRole("Admin", "User");
+                 po.RequireRole("Admin", "Customer");
              }));
-            var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
+            var key = Encoding.UTF8.GetBytes(Configuration["AppSettings:JWT_Secret"].ToString());
             services.AddAuthentication(x =>
             {
 
