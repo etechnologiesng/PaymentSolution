@@ -24,7 +24,7 @@ namespace PaymentSolution.Controllers
         private readonly AppSettings _setting;
         private readonly UserManager<AppUser> _userManager;
              
-        public AccountController(UserManager<AppUser> userManager, IOptions<AppSettings> setting)
+        public AccountController(UserManager<AppUser> userManager, AppSettings setting)
         {
             _userManager = userManager;
             _setting = setting;
@@ -61,7 +61,7 @@ namespace PaymentSolution.Controllers
                 //Get role assigned to the user
                 var role = await _userManager.GetRolesAsync(user);
                 IdentityOptions _options = new IdentityOptions();
-
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_setting.JWT_Secret));
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
@@ -69,9 +69,9 @@ namespace PaymentSolution.Controllers
                         new Claim("UserID",user.Id.ToString()),
                         new Claim(ClaimTypes.Role, role.FirstOrDefault())
                     }),
-
+                    
                     Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_setting.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
@@ -84,4 +84,3 @@ namespace PaymentSolution.Controllers
         }
         }
     }
-}

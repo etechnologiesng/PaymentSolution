@@ -37,7 +37,7 @@ namespace PaymentSolution
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-
+            var appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
             services.AddTransient<IPayment, PaymentService>((service) => service.GetService<PaymentService>());
 
             services.AddDbContext<PaymentDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -78,6 +78,13 @@ namespace PaymentSolution
                     };
                 }
                 );
+         
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info { Title = "Naija Event API using Screaming Architecture", Version = "v1" });
+
+
+            //});
         }
                     
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

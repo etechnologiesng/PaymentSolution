@@ -7,6 +7,7 @@ namespace PaymentSolution.Core.Service
 {
     public class PaymentResult
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
+        public bool IsComplete { get; set; }
     }
 }
