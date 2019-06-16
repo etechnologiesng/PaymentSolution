@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PaymentSolution.Common;
+using PaymentSolution.Core.DTO;
 using PaymentSolution.Core.Entity;
 using PaymentSolution.ViewModel;
 
@@ -24,35 +25,36 @@ namespace PaymentSolution.Controllers
         private readonly AppSettings _setting;
         private readonly UserManager<AppUser> _userManager;
              
-        public AccountController(UserManager<AppUser> userManager, AppSettings setting)
+        public AccountController(UserManager<AppUser> userManager, IOptions<AppSettings> setting)
         {
             _userManager = userManager;
-            _setting = setting;
+            _setting = setting.Value;
         }
 
 
-        [Route("register")]
+       [Route("register")]
         [HttpPost]
-        public async Task<ActionResult> InsertUser([FromBody] AppUserViewModel model)
+        public async Task<ActionResult> Register ([FromForm] AppUserDTO model)
         {
             var user = new AppUser
             {
-                Email = model.AppUser.Email,
-                UserName = model.AppUser.Email,
-                Fullname = model.AppUser.FullName,
-
+                Email = model.Email,
+                UserName = model.Email,
+                Fullname = model.FullName,
+               
 
             };
-            var result = await _userManager.CreateAsync(user, model.AppUser.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Customer");
             }
-            return Ok(new { Username = user.UserName });
-
+           // return Ok(new { Username = user.UserName });
+            return CreatedAtAction("Login", new { Username = user.UserName }, model);
         }
-
-            public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        [Route("Login")]
+        [HttpPost]
+        public async Task<IActionResult> Login([FromForm] LoginViewModel model)
             {
 
             var user = await _userManager.FindByNameAsync(model.UserName);

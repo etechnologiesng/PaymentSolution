@@ -8,7 +8,7 @@ namespace PaymentSolution.Core.DTO
 {
     public class PaymentDetailsDTO
     {
-
+        public int id { get; set; }
         [Required]
         public string CardOwnerName { get; set; }
 

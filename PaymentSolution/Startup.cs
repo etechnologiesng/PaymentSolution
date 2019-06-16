@@ -38,7 +38,7 @@ namespace PaymentSolution
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             var appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
-            services.AddTransient<IPayment, PaymentService>((service) => service.GetService<PaymentService>());
+            services.AddTransient<IPayment, PaymentService>();
 
             services.AddDbContext<PaymentDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
@@ -47,7 +47,7 @@ namespace PaymentSolution
                 op.Password.RequiredLength = 6;
 
 
-            });
+            }).AddEntityFrameworkStores<PaymentDbContext>();
             services.AddAuthorization(op => op.AddPolicy("First", po =>
              {
                  po.RequireRole("Admin", "Customer");

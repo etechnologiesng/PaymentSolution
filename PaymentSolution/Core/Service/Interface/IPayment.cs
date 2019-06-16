@@ -11,6 +11,6 @@ namespace PaymentSolution.Core.Application.Interface
    public interface IPayment
     {
         Task<PaymentResult> MakePayment(PaymentDetailsDTO paymentDetails);
-
+        Task<IEnumerable<PaymentDetailsDTO>> GetPayments();
     }
 }

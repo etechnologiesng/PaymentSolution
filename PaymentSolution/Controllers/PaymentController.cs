@@ -6,29 +6,30 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PaymentSolution.Core.Application.Interface;
 using PaymentSolution.Core.DTO;
 using PaymentSolution.Core.Service;
 using PaymentSolution.Data;
 using PaymentSolution.Model.Entity;
 
 namespace PaymentSolution.Controllers
-{   [Authorize]
+{ //  [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        private readonly PaymentService  _pService;
+        private readonly IPayment  _pService;
 
-        public PaymentController(PaymentService pService)
+        public PaymentController(IPayment pService)
         {
             _pService = pService;
         }
 
         // GET: api/Payment
-        [Route("{controller}/{action}")]
-        [ProducesResponseType(statusCode:200, Type =typeof(IEnumerable<PaymentDetailsDTO>))]
+       
+       [ProducesResponseType(statusCode:200, Type =typeof(IEnumerable<PaymentDetailsDTO>))]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PaymentDetailsDTO>>> GetPaymentDes()
+        public async Task<ActionResult<IEnumerable<PaymentDetailsDTO>>> index()
         {
             return  Ok( await _pService.GetPayments());
         }
@@ -79,13 +80,13 @@ namespace PaymentSolution.Controllers
 
         // POST: api/Payment
         [HttpPost]
-        public async Task<ActionResult<PaymentDetail>> PostPaymentDetail(PaymentDetailsDTO paymentDetail)
+        public async Task<ActionResult<PaymentDetail>> ProcessPayment([FromBody] PaymentDetailsDTO paymentDetail)
         {
           await  _pService.MakePayment(paymentDetail);
 
 
-            return Ok(new PaymentResult { IsComplete = true });
-        //    return CreatedAtAction("GetPaymentDetail", new { id = paymentDetail.Id }, paymentDetail);
+           // return Ok(new PaymentResult { IsComplete = true });
+        return CreatedAtAction("index", new PaymentResult { IsComplete = true }, paymentDetail);
         }
 
         // DELETE: api/Payment/5
